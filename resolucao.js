@@ -31,8 +31,7 @@ function nameRepair(objArray, takeOutArray, putInArray) {
             //adaptado de https://www.w3resource.com/javascript-exercises/javascript-string-exercise-9.php
             strRepair = strRepair.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
             
-            objArray[i].name = strRepair;
-               
+            objArray[i].name = strRepair;           
         }
     }
 }
@@ -56,12 +55,11 @@ function qtyRepair(objArray) {
             
             objArray[i].quantity = 0;            
         }
-    }
-    
+    }   
 }
 
-//funcao ordenacao para uso com array.sort(), adaptado de https://www.sitepoint.com/sort-an-array-of-objects-in-javascript/
-function ordenarCategoriaId(a, b) {
+//funcao de ordenacao para uso com array.sort(), adaptado de https://www.sitepoint.com/sort-an-array-of-objects-in-javascript/
+function sortCategoriaId(a, b) {
     
     //Usando toUpperCase() para ignorar diferenças de maiusculas e minusculas
     const categoryA = a.category.toUpperCase();
@@ -88,6 +86,15 @@ function ordenarCategoriaId(a, b) {
     return comparison;
 }
 
+//funcao de ordenacao
+function ordenarCategoriaId(database) {
+    
+    database.sort(sortCategoriaId);
+    
+    console.table(database, ["category", "id", "name"]);
+    
+}
+
 //adaptado de https://medium.com/@osiolabs/read-write-json-files-with-node-js-92d03cc82824, referencia utilizada para entender operacoes com arquivos JSON
 function exportDatabase(database, location) {
     
@@ -97,10 +104,41 @@ function exportDatabase(database, location) {
     fs.writeFile(location, jsonString, err => {
         if (err) {
             console.log('Error writing file', err)
-        } else {
-            console.log('Successfully wrote file')
         }
     })
+}
+
+
+//funcao calculo de estoque por categoria
+function valorEstoqueCategoria(database) {
+    
+    //inicializacao de uma array de objeto 'estoque', onde cada objeto representa uma categoria e recebe valor do estoque do primeiro produto
+    let estoque = [{
+        categoria: database[0].category,
+        valEstoque: database[0].quantity * database[0].price      
+    }],
+        index = 0;
+    
+    //loop para passar por todos os objetos da array de produtos
+    for(i = 1; i < database.length; i++) {
+        
+        //caso seja uma categoria diferente, inicializa novo objeto estoque, atribui o nome e o valor de estoque 
+        if (estoque[index].categoria != database[i].category) {
+            
+            index++;
+            estoque.push({
+                categoria: database[i].category,
+                valEstoque: database[i].quantity * database[i].price
+            })
+            
+        } else {
+            
+            //sendo a mesma categoria do produto atual, apenas acumular o valor de estoque
+            estoque[index].valEstoque += database[i].quantity * database[i].price;   
+        }        
+    }
+    
+    console.table(estoque);
 }
 
 let wrongChars =    ["æ", "¢", "ø", "ß"],
@@ -114,13 +152,13 @@ priceRepair(myDatabase);
 
 qtyRepair(myDatabase);
 
+ordenarCategoriaId(myDatabase);
 
-
-myDatabase.sort(ordenarCategoriaId);
-
-console.log(myDatabase);
+valorEstoqueCategoria(myDatabase);
 
 exportDatabase(myDatabase, './saida.json');
+
+
 
 
 
