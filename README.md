@@ -3,7 +3,7 @@
 ## 1.	Introdução
 
 Este repositório destina-se a alocar os materiais utilizados para desenvolver a resolução do desafio da Rocky. Utilizei o javascript por ter alguma experiência com ela em pequenos projetos pessoais e para faculdade. Tenho certa familiaridade com linguagem C e muitas das sintaxes dessa linguagem têm suporte em javascript, embora nem sempre sejam as mais indicadas.
-Para executar o programa é necessário instalar o node (mais informações aqui), baixar os arquivos do repositório em uma pasta, acessar essa pasta via prompt de comando e executar o comando “node resolução.js”.
+Para executar o programa é necessário instalar o node (mais informações em https://nodejs.org/en/download/), baixar os arquivos do repositório em uma pasta, acessar essa pasta via prompt de comando e executar o comando “node resolução.js”.
 A seguir, detalharei as funcionalidades.
 
 ## 2.	Funcionalidades
